@@ -14,6 +14,8 @@ export interface SportEvent {
   teams?: string[]
   status: "upcoming" | "live" | "completed"
   imageUrl?: string
+  league?: string
+  competition?: string
 }
 
 export interface F1Event extends SportEvent {
@@ -58,16 +60,29 @@ export interface NFLEvent extends SportEvent {
 }
 
 export interface FootballEvent extends SportEvent {
-  sport: "football"
+  // id: string;
+  sport: "football";
+  // title: string;
+  // description: string;
+  // startTime: string;
+  // location: string;
+  // venue: string;
   homeTeam: string
   awayTeam: string
-  competition: string
-  league: string
+  // competition: string
+  // league: string
   homeScore?: number | null
   awayScore?: number | null
+  // status: "live" | "upcoming" | "completed"
+  teams: [string, string]
   minute?: number | null
   halfTime?: boolean 
   fullTime?: boolean
+  homeTeamLogo?: string;
+  awayTeamLogo?: string;
+  leagueLogo?: string;
+  countryFlag?: string;
+  matchStatus?: string;
 }
 
 export interface LiveScore {
@@ -95,3 +110,18 @@ export type FootballLeague =
   | "Liga MX"
   | "Eredivisie"
   | "Primeira Liga"
+
+
+export type Event = FootballEvent | F1Event | NBAEvent | UEFAEvent | UFCEvent | NFLEvent;
+
+export interface APIResponse {
+  events: Event[];
+  success: boolean;
+  count: number;
+  isRealData: boolean;
+  sport: string;
+  status: string;
+  timestamp: string;
+  fallbackReason?: string;
+  message?: string;
+}

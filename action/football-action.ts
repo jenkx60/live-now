@@ -62,6 +62,7 @@ export async function fetchUpcomingMatches(): Promise<FootballEvent[]> {
   try {
     // Fetch from major leagues
     const leagues = [
+      LEAGUE_IDS.EUROPA_LEAGUE,
       LEAGUE_IDS.PREMIER_LEAGUE,
       LEAGUE_IDS.LA_LIGA,
       LEAGUE_IDS.SERIE_A,

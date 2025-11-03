@@ -1,15 +1,21 @@
+"use client"
 import FactorySection from '@/components/landing-page/factory-section'
 import Header from '@/components/landing-page/header'
 import HeroSection from '@/components/landing-page/hero'
 import React from 'react'
+import { motion } from 'framer-motion'
 
 const Home = () => {
   return (
-    <div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       <Header />
       <HeroSection />
       <FactorySection />
-    </div>
+    </motion.div>
   )
 }
 
