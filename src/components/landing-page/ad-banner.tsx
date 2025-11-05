@@ -27,9 +27,9 @@ export function AdBanner({ slot = "default", format = "horizontal", className = 
   }, [])
 
   const dimensions = {
-    horizontal: "h-24 md:h-32",
-    vertical: "h-96",
-    rectangle: "h-64",
+    horizontal: "h-[90px] md:h-[90px] w-full", // 728×90 leaderboard
+    vertical: "h-[600px] w-[300px]",           // 300×600 half page
+    rectangle: "h-[250px] w-[300px]",          // 300×250 medium rectangle
   }
 
   // Development placeholder
