@@ -104,7 +104,7 @@ export function AdBanner({ slot = "default", format = "horizontal", className = 
     }
 
     // Only load ads in production and for vertical format (300x250)
-    if (isProduction && format === "vertical" && !adLoaded) {
+    if (isProduction && format === "rectangle" && !adLoaded) {
       loadHighPerformanceAdv()
     }
   }, [isProduction, format, adLoaded])
