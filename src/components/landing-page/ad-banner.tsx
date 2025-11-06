@@ -100,11 +100,55 @@ export function AdBanner({ slot = "default", format = "horizontal", className = 
   useEffect(() => {
     // Only load ads in production and for horizontal format (728x90)
     if (isProduction && format === "horizontal" && !adLoaded) {
-      loadHighPerformanceAd()
+      loadHighPerformanceAdh()
+    }
+
+    // Only load ads in production and for vertical format (300x250)
+    if (isProduction && format === "vertical" && !adLoaded) {
+      loadHighPerformanceAdv()
     }
   }, [isProduction, format, adLoaded])
 
-  const loadHighPerformanceAd = () => {
+  const loadHighPerformanceAdv = () => {
+    try {
+      // @ts-expect-error: 'atOptions' is not defined on the window object type
+      window.atOptions = {
+        'key': '688b96731826738689322ac5cc031df0',
+        'format': 'iframe',
+        'height': 250,
+        'width': 300,
+        'params': {}
+      }
+
+      // Create and inject the ad script
+      const script = document.createElement('script')
+      script.type = 'text/javascript'
+      script.src = '//www.highperformanceformat.com/688b96731826738689322ac5cc031df0/invoke.js'
+      script.async = true
+      
+      // Add error handling
+      script.onerror = () => {
+        console.error('Failed to load High Performance Format ad script')
+        setAdLoaded(false)
+      }
+      
+      script.onload = () => {
+        console.log('High Performance Format ad script loaded successfully')
+        setAdLoaded(true)
+      }
+
+      // Append to the ad container or document head
+      if (adContainerRef.current) {
+        adContainerRef.current.appendChild(script)
+      } else {
+        document.head.appendChild(script)
+      }
+    } catch (err) {
+      console.error("High Performance Format ad error:", err)
+    }
+  }
+
+  const loadHighPerformanceAdh = () => {
     try {
       // Set the ad configuration
       // @ts-expect-error: 'atOptions' is not defined on the window object type
