@@ -223,6 +223,7 @@ export function AdBanner({ slot = "default", format = "horizontal", className = 
   }
 
   // Production ads
+  if (format === "horizontal") {
     // High Performance Format ad for horizontal banners
     return (
       <div className={`${dimensions[format]} ${className} mx-auto`}>
@@ -230,8 +231,8 @@ export function AdBanner({ slot = "default", format = "horizontal", className = 
           ref={adContainerRef}
           className="w-full h-full flex items-center justify-center bg-gray-900/20 rounded border border-gray-800"
           style={{ 
-            minHeight: isMobile || format === "rectangle" ? '250px' : '90px',
-            maxWidth: isMobile || format === "rectangle" ? '300px' : '728px'
+            minHeight: isMobile || format === "horizontal" ? '250px' : '90px',
+            maxWidth: isMobile || format === "horizontal" ? '300px' : '728px'
           }}
         >
           {!adLoaded && (
@@ -242,6 +243,7 @@ export function AdBanner({ slot = "default", format = "horizontal", className = 
         </div>
       </div>
     )
+  }
 
   if (format === "rectangle") {
     // High Performance Format ad for rectangle banners (300×250)
