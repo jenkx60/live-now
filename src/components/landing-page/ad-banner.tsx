@@ -11,106 +11,189 @@ interface AdBannerProps {
 export function AdBanner({ slot = "default", format = "horizontal", className = "" }: AdBannerProps) {
   const [isProduction, setIsProduction] = useState(false)
   const [adLoaded, setAdLoaded] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
   const adContainerRef = useRef<HTMLDivElement>(null)
+  const scriptLoadedRef = useRef<Set<string>>(new Set())
 
   useEffect(() => {
     setIsProduction(process.env.NODE_ENV === "production")
+
+    // to check if its mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+
+    return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
   useEffect(() => {
-    // Only load ads in production and for horizontal format (728x90)
-    if (isProduction && format === "horizontal" && !adLoaded) {
-      loadHighPerformanceAdh()
+    if (isProduction && !adLoaded) {
+      loadAppropriateAd()
+    }
+  }, [isProduction, isMobile, format, adLoaded])
+
+  const loadAppropriateAd = () => {
+    if (isMobile) {
+      if (format === "horizontal") {
+        // using rectangle ad for mobile instead of horizontal
+        loadHighPerformanceAd('rectangle')
+      } else if (format === "rectangle") {
+        loadHighPerformanceAd('rectangle')
+      }
+    } else {
+      // desktop format
+      if (format === "horizontal") {
+        loadHighPerformanceAd('horizontal')
+      } else if (format === "rectangle") {
+        loadHighPerformanceAd('rectangle')
+      }
+    }
+  }
+
+  const loadHighPerformanceAd = (adFormat: 'horizontal' | 'rectangle') => {
+    const adConfig = {
+      horizontal: {
+        key: '2747c9461883321cca25fdb26dfd624c',
+        height: 90,
+        width: 728,
+      },
+      rectangle: {
+        key: '688b96731826738689322ac5cc031df0',
+        height: 250,
+        width: 300,
+      }
     }
 
-    // Only load ads in production and for vertical format (300x250)
-    if (isProduction && format === "rectangle" && !adLoaded) {
-      loadHighPerformanceAdr()
-    }
-  }, [isProduction, format, adLoaded])
+    const config = adConfig[adFormat]
+    const scriptId = `highperf-ad-${config.key}`
 
-  const loadHighPerformanceAdr = () => {
+    if (scriptLoadedRef.current.has(scriptId)) {
+      setAdLoaded(true)
+      return
+    }
+
     try {
-      // @ts-expect-error: 'atOptions' is not defined on the window object type
-      window.atOptions = {
-        'key': '688b96731826738689322ac5cc031df0',
-        'format': 'iframe',
-        'height': 250,
-        'width': 300,
-        'params': {}
+      // create a unique varaible on window for ad config
+      const globalVarName = `atOptions_${config.key.slice(-8)}`
+
+      // @ts-expect-error: dynamically setting window property
+      window[globalVarName] = {
+        key: config.key,
+        format: 'iframe',
+        height: config.height,
+        width: config.width,
+        params: {}
       }
 
       // Create and inject the ad script
       const script = document.createElement('script')
       script.type = 'text/javascript'
-      script.src = '//www.highperformanceformat.com/688b96731826738689322ac5cc031df0/invoke.js'
+      script.src = `//www.highperformanceformat.com/${config.key}/invoke.js`
       script.async = true
-      
-      // Add error handling
+      script.id = scriptId
+
       script.onerror = () => {
-        console.error('Failed to load High Performance Format ad script')
+        console.error('Failed to load ad script')
         setAdLoaded(false)
       }
-      
+
       script.onload = () => {
-        console.log('High Performance Format ad script loaded successfully')
+        console.log('Ad script loaded successfully')
         setAdLoaded(true)
+        scriptLoadedRef.current.add(scriptId)
       }
 
-      // Append to the ad container or document head
-      if (adContainerRef.current) {
-        adContainerRef.current.appendChild(script)
-      } else {
-        document.head.appendChild(script)
-      }
+      document.head.appendChild(script)
     } catch (err) {
       console.error("High Performance Format ad error:", err)
     }
   }
 
-  const loadHighPerformanceAdh = () => {
-    try {
-      // Set the ad configuration
-      // @ts-expect-error: 'atOptions' is not defined on the window object type
-      window.atOptions = {
-        'key': '2747c9461883321cca25fdb26dfd624c',
-        'format': 'iframe',
-        'height': 90,
-        'width': 728,
-        'params': {}
-      }
+  // const loadHighPerformanceAdr = () => {
+  //   try {
+  //     // @ts-expect-error: 'atOptions' is not defined on the window object type
+  //     window.atOptions = {
+  //       'key': '688b96731826738689322ac5cc031df0',
+  //       'format': 'iframe',
+  //       'height': 250,
+  //       'width': 300,
+  //       'params': {}
+  //     }
 
-      // Create and inject the ad script
-      const script = document.createElement('script')
-      script.type = 'text/javascript'
-      script.src = '//www.highperformanceformat.com/2747c9461883321cca25fdb26dfd624c/invoke.js'
-      script.async = true
+  //     // Create and inject the ad script
+  //     const script = document.createElement('script')
+  //     script.type = 'text/javascript'
+  //     script.src = '//www.highperformanceformat.com/688b96731826738689322ac5cc031df0/invoke.js'
+  //     script.async = true
       
-      // Add error handling
-      script.onerror = () => {
-        console.error('Failed to load High Performance Format ad script')
-        setAdLoaded(false)
-      }
+  //     // Add error handling
+  //     script.onerror = () => {
+  //       console.error('Failed to load High Performance Format ad script')
+  //       setAdLoaded(false)
+  //     }
       
-      script.onload = () => {
-        console.log('High Performance Format ad script loaded successfully')
-        setAdLoaded(true)
-      }
+  //     script.onload = () => {
+  //       console.log('High Performance Format ad script loaded successfully')
+  //       setAdLoaded(true)
+  //     }
 
-      // Append to the ad container or document head
-      if (adContainerRef.current) {
-        adContainerRef.current.appendChild(script)
-      } else {
-        document.head.appendChild(script)
-      }
+  //     // Append to the ad container or document head
+  //     if (adContainerRef.current) {
+  //       adContainerRef.current.appendChild(script)
+  //     } else {
+  //       document.head.appendChild(script)
+  //     }
+  //   } catch (err) {
+  //     console.error("High Performance Format ad error:", err)
+  //   }
+  // }
 
-    } catch (err) {
-      console.error("High Performance Format ad error:", err)
-    }
-  }
+  // const loadHighPerformanceAdh = () => {
+  //   try {
+  //     // Set the ad configuration
+  //     // @ts-expect-error: 'atOptions' is not defined on the window object type
+  //     window.atOptions = {
+  //       'key': '2747c9461883321cca25fdb26dfd624c',
+  //       'format': 'iframe',
+  //       'height': 90,
+  //       'width': 728,
+  //       'params': {}
+  //     }
+
+  //     // Create and inject the ad script
+  //     const script = document.createElement('script')
+  //     script.type = 'text/javascript'
+  //     script.src = '//www.highperformanceformat.com/2747c9461883321cca25fdb26dfd624c/invoke.js'
+  //     script.async = true
+      
+  //     // Add error handling
+  //     script.onerror = () => {
+  //       console.error('Failed to load High Performance Format ad script')
+  //       setAdLoaded(false)
+  //     }
+      
+  //     script.onload = () => {
+  //       console.log('High Performance Format ad script loaded successfully')
+  //       setAdLoaded(true)
+  //     }
+
+  //     // Append to the ad container or document head
+  //     if (adContainerRef.current) {
+  //       adContainerRef.current.appendChild(script)
+  //     } else {
+  //       document.head.appendChild(script)
+  //     }
+
+  //   } catch (err) {
+  //     console.error("High Performance Format ad error:", err)
+  //   }
+  // }
 
   const dimensions = {
-    horizontal: "h-[90px] w-full max-w-[728px]", // 728×90 leaderboard
+    horizontal: isMobile ? "h-[250px] w-[300px]" : "h-[90px] w-full max-w-[728px]", // 728×90 leaderboard
     vertical: "h-[600px] w-[300px]",             // 300×600 half page
     rectangle: "h-[250px] w-[300px]",            // 300×250 medium rectangle
   }
@@ -123,11 +206,16 @@ export function AdBanner({ slot = "default", format = "horizontal", className = 
           <div className="text-center text-muted-foreground">
             <p className="text-sm font-medium">Ad Space ({format})</p>
             <p className="text-xs mt-1">
-              {format === "horizontal" ? "728×90 High Performance Format" : format === "rectangle" ? "300x250 High Performance Format" : "Ad placeholder"} will appear here in production
+              {format === "horizontal" 
+                ? (isMobile ? "300×250 (Mobile)" : "728×90 (Desktop)")
+                : format === "rectangle" 
+                  ? "300×250"
+                  : "Ad placeholder"
+              } will appear here in production
             </p>
-            {(format === "horizontal" || format === "rectangle") && (
-              <p className="text-xs text-orange-400 mt-1">High Performance Format Ad</p>
-            )}
+            <p className="text-xs text-orange-400 mt-1">
+              Device: {isMobile ? "Mobile" : "Desktop"}
+            </p>
           </div>
         </CardContent>
       </Card>
@@ -135,24 +223,25 @@ export function AdBanner({ slot = "default", format = "horizontal", className = 
   }
 
   // Production ads
-  if (format === "horizontal") {
     // High Performance Format ad for horizontal banners
     return (
       <div className={`${dimensions[format]} ${className} mx-auto`}>
         <div 
           ref={adContainerRef}
           className="w-full h-full flex items-center justify-center bg-gray-900/20 rounded border border-gray-800"
-          style={{ minHeight: '90px', maxWidth: '728px' }}
+          style={{ 
+            minHeight: isMobile || format === "rectangle" ? '250px' : '90px',
+            maxWidth: isMobile || format === "rectangle" ? '300px' : '728px'
+          }}
         >
           {!adLoaded && (
             <div className="text-center text-gray-500 text-xs">
-              Loading ad...
+              Loading {isMobile ? 'mobile' : 'desktop'} ad...
             </div>
           )}
         </div>
       </div>
     )
-  }
 
   if (format === "rectangle") {
     // High Performance Format ad for rectangle banners (300×250)
