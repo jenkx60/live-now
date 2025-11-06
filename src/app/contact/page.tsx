@@ -283,7 +283,7 @@ const ContactPage = () => {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.5, duration: 0.6 }}
                         >
-                            <AdBanner slot="0987654321" format="vertical" className="my-4 mx-auto w-full max-w-4xl" />
+                            <AdBanner slot="0987654321" format="rectangle" className="my-4 mx-auto w-full max-w-4xl" />
                         </motion.div>
                     </motion.div>
 

@@ -893,7 +893,7 @@ const FactorySection = () => {
                         whileHover={{ scale: 1.02 }}
                         transition={{ type: "spring", stiffness: 300 }}
                     >
-                        <AdBanner slot="0987654321" format="vertical" className="my-4 mx-auto w-full max-w-4xl" />
+                        <AdBanner slot="0987654321" format="rectangle" className="my-4 mx-auto w-full max-w-4xl" />
                     </motion.div>
 
                     <motion.div
@@ -909,7 +909,7 @@ const FactorySection = () => {
                         whileHover={{ scale: 1.02 }}
                         transition={{ type: "spring", stiffness: 300 }}
                     >
-                        <AdBanner slot="0987654321" format="vertical" className="my-4 mx-auto w-full max-w-4xl" />
+                        <AdBanner slot="0987654321" format="rectangle" className="my-4 mx-auto w-full max-w-4xl" />
                     </motion.div>
                 </motion.div>
             </div>
