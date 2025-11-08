@@ -468,9 +468,9 @@ const FactorySection = () => {
                 )}
             </motion.div>
 
-            <motion.div variants={itemVariants}>
+            {/* <motion.div variants={itemVariants}>
                 <AdBanner slot="1234567890" format="horizontal" className="my-4 mx-auto w-full " />
-            </motion.div>
+            </motion.div> */}
             <div className='grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-6 md:gap-8'>
                 <motion.div variants={itemVariants}>
                     <Tabs defaultValue='live' className='w-full'>
@@ -889,12 +889,12 @@ const FactorySection = () => {
                     className='space-y-4'
                     variants={itemVariants}
                 >
-                    <motion.div
+                    {/* <motion.div
                         whileHover={{ scale: 1.02 }}
                         transition={{ type: "spring", stiffness: 300 }}
                     >
                         <AdBanner slot="0987654321" format="rectangle" className="my-4 mx-auto w-full max-w-4xl" />
-                    </motion.div>
+                    </motion.div> */}
 
                     <motion.div
                         initial={{ opacity: 0, x: 50 }}
@@ -905,12 +905,12 @@ const FactorySection = () => {
                         <BuyCoffee />
                     </motion.div>
 
-                    <motion.div
+                    {/* <motion.div
                         whileHover={{ scale: 1.02 }}
                         transition={{ type: "spring", stiffness: 300 }}
                     >
                         <AdBanner slot="0987654321" format="rectangle" className="my-4 mx-auto w-full max-w-4xl" />
-                    </motion.div>
+                    </motion.div> */}
                 </motion.div>
             </div>
         </div>

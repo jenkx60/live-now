@@ -7,9 +7,9 @@ import { Coffee, Tally5 } from 'lucide-react'
 const Footer = () => {
   return (
     <footer className='border-t'>
-        <div>
+        {/* <div>
             <AdBanner slot="1234567890" format="horizontal" className="my-4 mx-auto w-full max-w-4xl" />
-        </div>
+        </div> */}
 
         <div className="container mx-auto px-4 py-12">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
