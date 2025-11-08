@@ -5,8 +5,9 @@ import { motion } from 'framer-motion'
 
 const HeroSection = () => {
   return (
-    <section className='bg-gradient-to-br from-primary/10 via-background to-background flex flex-col space-y-6 md:space-y-10 min-h-[80vh] md:min-h-[85vh] justify-center relative overflow-hidden'>
-        <div className='max-w-xs md:max-w-2xl mx-auto px-5 py-20 mt-20 text-center space-y-10'>
+    <section className='bg-[url("/stadium.jpg")] bg-cover bg-center bg-no-repeat flex flex-col space-y-6 md:space-y-10 min-h-[80vh] md:min-h-[85vh] justify-center relative overflow-hidden'>
+      <div className="absolute inset-0 bg-black/60 h-full"></div>
+        <div className='relative max-w-xs md:max-w-2xl mx-auto px-5 py-20 mt-20 text-center space-y-10'>
             <motion.div 
               className='space-y-4 md:space-y-6'
               initial={{ opacity: 0, y: 50 }}
