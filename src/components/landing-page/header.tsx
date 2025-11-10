@@ -16,7 +16,7 @@ const navLinks = [
     // { name: "Coming Soon", href: "/coming-soon" },
     { name: "About Us", href: "/about" },
     { name: "Contact", href: "/contact" },
-    { name: "Privacy Policy", href: "/" },
+    // { name: "Privacy Policy", href: "/" },
 ];
 
 const Header = () => {

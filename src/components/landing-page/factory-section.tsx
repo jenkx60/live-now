@@ -410,7 +410,7 @@ const FactorySection = () => {
 
   return (
     // <motion.section 
-        <section className='bg-black flex flex-col space-y-6 md:space-y-8 lg:space-y-10 min-h-[60vh] justify-center border-y-2 p-4 md:p-6 lg:p-10'
+        <section id="factory-section" className='bg-black flex flex-col space-y-6 md:space-y-8 lg:space-y-10 min-h-[60vh] justify-center border-y-2 p-4 md:p-6 lg:p-10'
         // initial='hidden'
         // whileInView='visible'
         // viewport={{ once: true, amount: 0.2 }}
