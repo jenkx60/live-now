@@ -2,6 +2,7 @@
 import React from 'react'
 import { Button } from '../ui/button'
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 
 const HeroSection = () => {
   return (
@@ -39,7 +40,7 @@ const HeroSection = () => {
                     initial={{ opacity: 0, x: 50 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.7, duration: 0.8 }}
-                    className="bg-gradient-to-r text-primary bg-clip-text block sm:inline"
+                    className="bg-linear-to-r text-primary bg-clip-text block sm:inline"
                   >
                     Scores & Fixtures
                   </motion.span>
@@ -61,16 +62,20 @@ const HeroSection = () => {
               transition={{ delay: 1.2, duration: 0.8 }}
             >
               <motion.div
-                whileHover={{ scale: 1.05, boxShadow: 'o 10px 25px rgba(251, 146, 60, 0.3)' }}
+                whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(251, 146, 60, 0.3)' }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: "spring", stiffness: 300 }}
                 className='w-full md:w-auto'
               >
-                <Button className='text-black font-bold p-4 md:p-5 text-xs md:text-[14px] cursor-pointer w-full '>View Live Scores</Button>
+                <Link href='#factory-section' className='w-full block'>
+                  <Button className='text-black font-bold p-4 md:p-5 text-xs md:text-[14px] cursor-pointer w-full'>
+                      View Live Scores
+                  </Button>
+                </Link>
               </motion.div>
 
               <motion.div
-                whileHover={{ scale: 1.05, boxShadow: 'o 10px 25px rgba(251, 146, 60. 0.3)' }}
+                whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(251, 146, 60. 0.3)' }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: "spring", stiffness: 300 }}
                 className='w-full md:w-auto'

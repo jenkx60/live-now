@@ -1,8 +1,9 @@
 import React from 'react'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card'
-import { Coffee, HeartIcon } from 'lucide-react'
+import { Beer, Coffee, HeartIcon } from 'lucide-react'
 import { Button } from '../ui/button'
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 
 const BuyCoffee = () => {
   return (
@@ -48,7 +49,7 @@ const BuyCoffee = () => {
                     whileInView={{ opacity: 1 }}
                     transition={{ delay: 0.2, duration: 0.5 }}
                 >
-                    Live Football Now is completely free to use. If you find it helpful, consider buying us a coffee to support development and server costs.
+                    Live Now is completely free to use. If you find it helpful, consider buying us a beer to support development and server costs.
                 </motion.p>
             </CardContent>
             <CardFooter className='pt-3'>
@@ -57,10 +58,12 @@ const BuyCoffee = () => {
                     whileHover={{ scale: 1.02 }}
                     className='w-full'
                 >
-                    <Button className='w-full font-medium py-3 px-4 text-sm sm:text-base text-black transition-colors duration-200 cursor-pointer' variant="default">
-                        <Coffee className='w-4 h-4 mr-2 flex-shrink-0' />
-                        Buy Me a Coffee
-                    </Button>
+                    <Link href='https://buymeacoffee.com/livenow1' target='_blank' rel='noopener noreferrer' className='w-full'>
+                        <Button className='w-full font-medium py-3 px-4 text-sm sm:text-base text-black transition-colors duration-200 cursor-pointer' variant="default">
+                            <Beer className='w-4 h-4 mr-2 flex-shrink-0' />
+                            Buy Me a Beer
+                        </Button>
+                    </Link>
                 </motion.div>
             </CardFooter>
         </Card>
