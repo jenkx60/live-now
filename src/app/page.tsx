@@ -13,7 +13,7 @@ const Home = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <Snowfall color="white"/>
+      <Snowfall color="white" snowflakeCount={50}/>
       <Header />
       <HeroSection />
       <FactorySection />

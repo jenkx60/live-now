@@ -3,6 +3,7 @@ import React from 'react'
 import { Button } from '../ui/button'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import Snowfall from 'react-snowfall'
 
 const HeroSection = () => {
   return (
@@ -15,6 +16,7 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, ease: "easeOut" }}
             >
+              <Snowfall color='white' snowflakeCount={50}/>
                 <motion.h1 
                   className='text-white font-bold text-3xl md:text-7xl leading-tight'
                   initial={{ opacity: 0, scale: 0.5 }}

@@ -17,6 +17,7 @@ import { Input } from '../ui/input'
 import { Label } from '../ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import { totalmem } from 'os'
+import Snowfall from 'react-snowfall'
 
 const FactorySection = () => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -416,504 +417,505 @@ const FactorySection = () => {
         // viewport={{ once: true, amount: 0.2 }}
         // variants={containerVariants}
     >
-        <div className='max-w-6xl mx-auto px-2 md:px-5 py-6 md:py-10 text-center w-full gap-6 md:gap-8 lg:gap-10 flex flex-col'>
-            <motion.div 
-                className='text-center space-y-4 mb-6 md:mb-10'
-                variants={itemVariants}
-            >
-                <motion.h1 variants={itemVariants} className='font-bold text-white text-2xl md:text-4xl'>Football Live Scores</motion.h1>
-                <StatusIndicator />
-                <motion.p 
-                    className='text-gray-400 text-sm md:text-base'
+            <Snowfall color='white' snowflakeCount={50}/>
+            <div className='max-w-6xl mx-auto px-2 md:px-5 py-6 md:py-10 text-center w-full gap-6 md:gap-8 lg:gap-10 flex flex-col'>
+                <motion.div 
+                    className='text-center space-y-4 mb-6 md:mb-10'
                     variants={itemVariants}
                 >
-                    Real-time updates from all major leagues worldwide
-                </motion.p>
-
-                {/* Last Updated Info */}
-                {lastUpdated && (
-                    <motion.div 
-                        className='text-xs text-gray-500 flex flex-col md:flex-row items-center justify-center gap-2'
+                    <motion.h1 variants={itemVariants} className='font-bold text-white text-2xl md:text-4xl'>Football Live Scores</motion.h1>
+                    <StatusIndicator />
+                    <motion.p 
+                        className='text-gray-400 text-sm md:text-base'
                         variants={itemVariants}
                     >
-                        <span>Last updated: {lastUpdated.toLocaleTimeString()}</span>
-                        <motion.button
-                            onClick={refetch}
-                            className='text-orange-400 hover:text-orange-300 transition-colors cursor-pointer'
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
-                            title="Refresh data"
-                        >
-                            <RefreshCw className='w-3 h-3' />
-                        </motion.button>
-                    </motion.div>
-                )}
+                        Real-time updates from all major leagues worldwide
+                    </motion.p>
 
-                {/* ✅ Error Display */}
-                {error && (
-                    <motion.div 
-                        className='bg-red-900/20 border border-red-500/30 rounded-lg p-3 max-w-md mx-auto'
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ type: "spring", stiffness: 200 }}
-                    >
-                        <p className='text-red-400 text-sm'>{error}</p>
-                        <Button 
-                            onClick={refetch}
-                            className='text-orange-400 text-xs underline mt-1 hover:text-orange-300 cursor-pointer p-0 h-auto'
-                        >
-                            Try again
-                        </Button>
-                    </motion.div>
-                )}
-            </motion.div>
-
-            {/* <motion.div variants={itemVariants}>
-                <AdBanner slot="1234567890" format="horizontal" className="my-4 mx-auto w-full " />
-            </motion.div> */}
-            <div className='grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-6 md:gap-8'>
-                <motion.div variants={itemVariants}>
-                    <Tabs defaultValue='live' className='w-full'>
-                        <motion.div
-                            className='space-y-4'
+                    {/* Last Updated Info */}
+                    {lastUpdated && (
+                        <motion.div 
+                            className='text-xs text-gray-500 flex flex-col md:flex-row items-center justify-center gap-2'
                             variants={itemVariants}
                         >
-                            {/* Search and Filters */}
-                            <div className='relative'>
-                                <Search className='absolute left-3 bottom-8 transform translate-y-1/2 w-4 h-4 md:w-5 md:h-5 text-primary' />
-                                <Input
-                                    type='text'
-                                    placeholder='Search teams, leagues, or venues...'
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                    className='pl-10 w-full mb-4 bg-transparent border-gray-700 text-white placeholder-gray-500 focus:border-orange-400 text-sm md:text-base' 
-                                />
-            
-                                {searchTerm && (
-                                    <Button
-                                        onClick={() => setSearchTerm("")}
-                                        className='absolute right-3 -bottom-1 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors bg-transparent hover:bg-transparent cursor-pointer'
-                                    >
-                                        <X className='w-6 h-6' />
-                                    </Button>
-                                )}
-                            </div>
+                            <span>Last updated: {lastUpdated.toLocaleTimeString()}</span>
+                            <motion.button
+                                onClick={refetch}
+                                className='text-orange-400 hover:text-orange-300 transition-colors cursor-pointer'
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                title="Refresh data"
+                            >
+                                <RefreshCw className='w-3 h-3' />
+                            </motion.button>
                         </motion.div>
-                        {/* Filter Toggle Button */}
-                            <div className='flex justify-between p-2 items-center'>
-                                <div>
-                                    {/* Advanced Filters */}
-                                    <motion.div
-                                        initial={false}
-                                        animate={{
-                                            height: showFilters ? "auto" : 0,
-                                            opacity: showFilters ? 1 : 0
-                                        }}
-                                        transition={{ duration: 0.3 }}
-                                        className='overflow-hidden'
-                                    >
-                                        <div className='grid grid-cols-1 md:grid-cols-2 gap-4 pt-4'>
-                                            {/* League Filter */}
-                                            <div className='space-y-2'>
-                                                <Label className='text-sm text-gray-400'>Filter by League</Label>
-                                                <Select value={selectedLeague} onValueChange={setSelectedLeague}>
-                                                    <SelectTrigger className='text-white'>
-                                                        <SelectValue placeholder="All Leagues" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        <SelectItem value='all'>All Leagues</SelectItem>
-                                                        {availableLeagues.map(league => (
-                                                            <SelectItem key={league} value={league} className='text-white'>{league}</SelectItem>
-                                                        ))}
-                                                    </SelectContent>
-                                                </Select>
-                                            </div>
+                    )}
 
-                                            {/* Status Filter */}
-                                            <div className='space-y-2'>
-                                                <Label className='text-sm text-gray-400'>Filter by Status</Label>
-                                                <Select value={selectedStatus} onValueChange={setSelectedStatus}>
-                                                    <SelectTrigger className='text-white cursor-pointer'>
-                                                        <SelectValue placeholder="All Matches" />
-                                                    </SelectTrigger>
-                                                    <SelectContent className='text-white cursor-pointer'>
-                                                        <SelectItem value='all'>All Matches</SelectItem>
-                                                        <SelectItem value='live'>Live Matches</SelectItem>
-                                                        <SelectItem value='upcoming'>Upcoming Matches</SelectItem>
-                                                        <SelectItem value='completed'>Completed Matches</SelectItem>
-                                                    </SelectContent>
-                                                </Select>
-                                            </div>
-                                        </div>
-                                    </motion.div>
-                                </div>
-                                <div>
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        onClick={() => setShowFilters(!showFilters)}
-                                        className='text-gray-400 border-gray-700 hover:text-white hover:border-orange-400 cursor-pointer'
-                                    >
-                                        <Filter className='w-4 h-4 mr-2' />
-                                        {showFilters ? "Hide Filters" : "Show Filters"}
-                                    </Button>
+                    {/* ✅ Error Display */}
+                    {error && (
+                        <motion.div 
+                            className='bg-red-900/20 border border-red-500/30 rounded-lg p-3 max-w-md mx-auto'
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ type: "spring", stiffness: 200 }}
+                        >
+                            <p className='text-red-400 text-sm'>{error}</p>
+                            <Button 
+                                onClick={refetch}
+                                className='text-orange-400 text-xs underline mt-1 hover:text-orange-300 cursor-pointer p-0 h-auto'
+                            >
+                                Try again
+                            </Button>
+                        </motion.div>
+                    )}
+                </motion.div>
 
-                                    
-                                </div>
-                            </div>
-
-
-                        <TabsList className='grid grid-cols-3 mb-6 md:mb-8 w-full text-xs md:text-sm'>
-                            <TabsTrigger value='live' className="relative">
-                                <span className='hidden sm:inline'>Live Matches ({liveMatches.length})</span>
-                                <span className='sm:hidden'>Live({liveMatches.length})</span>
-                                {liveMatches.length > 0 && (
-                                    <motion.div 
-                                        className='w-2 h-2 bg-red-500 rounded-full ml-1 md:ml-2'
-                                        animate={{ 
-                                            scale: [1, 1.2, 1],
-                                            opacity: [1, 0.5, 1] 
-                                        }}
-                                        transition={{ 
-                                            duration: 1,
-                                            repeat: Infinity 
-                                        }}
+                {/* <motion.div variants={itemVariants}>
+                    <AdBanner slot="1234567890" format="horizontal" className="my-4 mx-auto w-full " />
+                </motion.div> */}
+                <div className='grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-6 md:gap-8'>
+                    <motion.div variants={itemVariants}>
+                        <Tabs defaultValue='live' className='w-full'>
+                            <motion.div
+                                className='space-y-4'
+                                variants={itemVariants}
+                            >
+                                {/* Search and Filters */}
+                                <div className='relative'>
+                                    <Search className='absolute left-3 bottom-8 transform translate-y-1/2 w-4 h-4 md:w-5 md:h-5 text-primary' />
+                                    <Input
+                                        type='text'
+                                        placeholder='Search teams, leagues, or venues...'
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                        className='pl-10 w-full mb-4 bg-transparent border-gray-700 text-white placeholder-gray-500 focus:border-orange-400 text-sm md:text-base' 
                                     />
-                                )}
-                            </TabsTrigger>
-                            <TabsTrigger value='upcoming'>
-                                <span className='hidden sm:inline'>Upcoming ({upcomingMatches.length})</span>
-                                <span className='sm:hidden'>Upcoming ({upcomingMatches.length})</span>
-                            </TabsTrigger>
-                            <TabsTrigger value='league'>
-                                <span className='hidden sm:inline'>By League ({Object.keys(matchesByLeague).length})</span>
-                                <span className='sm:hidden'>League ({Object.keys(matchesByLeague).length})</span>
-                            </TabsTrigger>
-                        </TabsList>
-                            <div className='flex justify-between'>
-                                {/* Active Filters Display */}
-                                {(searchTerm || selectedLeague !== 'all' || selectedStatus !== 'all') && (
-                                    <motion.div
-                                        initial={{ opacity: 0, y: 10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        className='flex flex-wrap gap-2 cursor-pointer'
-                                    >
-                                        {searchTerm && (
-                                            <Badge variant="secondary" className='flex items-center gap-1 text-xs'>
-                                                Search: "{searchTerm}"
-                                                <span onClick={() => setSearchTerm("")} className='ml-1 hover:text-red-400 cursor-pointer'>
-                                                    <X className='w-3 h-3' />
-                                                </span>
-                                            </Badge>
-                                        )}
-
-                                        {selectedLeague !== 'all' && (
-                                            <Badge variant="secondary" className='flex items-center gap-1 text-xs'>
-                                                League: {selectedLeague}
-                                                <span onClick={() => setSelectedLeague("all")} className='ml-1 hover:text-red-400 cursor-pointer'>
-                                                    <X className='w-3 h-3' />
-                                                </span>
-                                            </Badge>
-                                        )}
-
-                                        {selectedStatus !== 'all' && (
-                                            <Badge variant="secondary" className='flex items-center gap-1 text-xs'>
-                                                Status: {selectedStatus}
-                                                <span onClick={() => setSelectedStatus("all")} className='ml-1 hover:text-red-400 cursor-pointer'>
-                                                    <X className='w-3 h-3' />
-                                                </span>
-                                            </Badge>
-                                        )}
-                                    </motion.div>
-                                )}
-
-                                {/* Active Filters Indicator */}
-                                    {(searchTerm || selectedLeague !== "all" || selectedStatus !== "all") && (
-                                        <div className='flex items-center gap-2'>
-                                            <span className='text-xs text-gray-500'>
-                                                {filteredMatches.length} of {footballMatches.length} matches found
-                                            </span>
-                                            <Button
-                                                variant="ghost"
-                                                size="sm"
-                                                onClick={clearFilters}
-                                                className='text-gray-400 hover:text-white underline'>
-                                                Clear All
-                                            </Button>
-                                        </div>
+                
+                                    {searchTerm && (
+                                        <Button
+                                            onClick={() => setSearchTerm("")}
+                                            className='absolute right-3 -bottom-1 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors bg-transparent hover:bg-transparent cursor-pointer'
+                                        >
+                                            <X className='w-6 h-6' />
+                                        </Button>
                                     )}
-                            </div>
-
-                            <TabsContent value='live' className='space-y-4'>
-                                {liveMatches.length === 0 ? (
-                                    <motion.div
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        className='text-center py-8'
-                                    >
-                                        <p className="text-gray-400 text-sm md:text-base">
-                                            {searchTerm || selectedLeague !== 'all' || selectedStatus !== 'all' 
-                                                ? 'No live matches found with current filters' 
-                                                : 'No live matches at the moment'
-                                            }
-                                        </p>
-                                        <p className="text-gray-500 text-xs md:text-sm mt-2">
-                                            {searchTerm || selectedLeague !== 'all' || selectedStatus !== 'all'
-                                                ? 'Try adjusting your search or filters'
-                                                : 'Check back later for live action!'
-                                            }
-                                        </p>
-                                    </motion.div>
-                                ) : (
-
-                                <motion.div
-                                    initial="hidden"
-                                    animate="visible"
-                                    variants={containerVariants}
-                                    className='space-y-4'
-                                >
-                                    {getPaginatedData(liveMatches, currentPage.live).map((match, index) => (
+                                </div>
+                            </motion.div>
+                            {/* Filter Toggle Button */}
+                                <div className='flex justify-between p-2 items-center'>
+                                    <div>
+                                        {/* Advanced Filters */}
                                         <motion.div
-                                            key={match.id}
-                                            variants={cardVariants}
-                                            whileHover="hover"
-                                            custom={index}
+                                            initial={false}
+                                            animate={{
+                                                height: showFilters ? "auto" : 0,
+                                                opacity: showFilters ? 1 : 0
+                                            }}
+                                            transition={{ duration: 0.3 }}
+                                            className='overflow-hidden'
                                         >
-                                            <Card>
-                                                <CardContent>
-                                                    <div className='flex items-center justify-between'>
-                                                        <div className='flex flex-col w-full gap-8'>
-                                                            <div className='flex justify-between gap-2 mb-2 items-center'>
-                                                                    <p className='text-gray-400 text-sm'>{match.league}</p>
-                                                                    <motion.div
-                                                                        animate={{ 
-                                                                            scale: [1, 1.1, 1], opacity: [1, 0.8, 1] 
-                                                                        }}
-                                                                        transition={{
-                                                                            duration: 1.5,
-                                                                            repeat: Infinity
-                                                                        }}
-                                                                    >
-                                                                        <Badge variant="destructive" className='animate-pulse'>LIVE {match.minute}&apos;</Badge>
-                                                                    </motion.div>
-                                                            </div>
-                                                            <div className='text-white font-bold flex flex-col gap-2'>
-                                                                <p>{match.homeTeam} vs {match.awayTeam}</p>
-                                                                <p>{match.homeScore} - {match.awayScore}</p>
-                                                            </div>
-                                                            <div className='text-gray-400 text-sm'>{match.venue}</div>
-                                                        </div>
-                                                    </div>
-                                                </CardContent>
-                                            </Card>
-                                        </motion.div>
-                                    ))}
-                                </motion.div>
-                                )}
-                                <PaginationControls 
-                                    currentPage={currentPage.live}
-                                    totalPages={getTotalPages(liveMatches.length)}
-                                    onPageChange={(page) => handlePageChange('live', page)}
-                                    totalItems={liveMatches.length}
-                                    tab='live'
-                                />
-                            </TabsContent>
+                                            <div className='grid grid-cols-1 md:grid-cols-2 gap-4 pt-4'>
+                                                {/* League Filter */}
+                                                <div className='space-y-2'>
+                                                    <Label className='text-sm text-gray-400'>Filter by League</Label>
+                                                    <Select value={selectedLeague} onValueChange={setSelectedLeague}>
+                                                        <SelectTrigger className='text-white'>
+                                                            <SelectValue placeholder="All Leagues" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            <SelectItem value='all'>All Leagues</SelectItem>
+                                                            {availableLeagues.map(league => (
+                                                                <SelectItem key={league} value={league} className='text-white'>{league}</SelectItem>
+                                                            ))}
+                                                        </SelectContent>
+                                                    </Select>
+                                                </div>
 
-                            <TabsContent value='upcoming' className='space-y-4'>
-                                <motion.div
-                                    initial="hidden"
-                                    animate="visible"
-                                    variants={containerVariants}
-                                    className='space-y-4'
-                                >
-                                    {getPaginatedData(upcomingMatches, currentPage.upcoming).map((match, index) => (
+                                                {/* Status Filter */}
+                                                <div className='space-y-2'>
+                                                    <Label className='text-sm text-gray-400'>Filter by Status</Label>
+                                                    <Select value={selectedStatus} onValueChange={setSelectedStatus}>
+                                                        <SelectTrigger className='text-white cursor-pointer'>
+                                                            <SelectValue placeholder="All Matches" />
+                                                        </SelectTrigger>
+                                                        <SelectContent className='text-white cursor-pointer'>
+                                                            <SelectItem value='all'>All Matches</SelectItem>
+                                                            <SelectItem value='live'>Live Matches</SelectItem>
+                                                            <SelectItem value='upcoming'>Upcoming Matches</SelectItem>
+                                                            <SelectItem value='completed'>Completed Matches</SelectItem>
+                                                        </SelectContent>
+                                                    </Select>
+                                                </div>
+                                            </div>
+                                        </motion.div>
+                                    </div>
+                                    <div>
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
+                                            onClick={() => setShowFilters(!showFilters)}
+                                            className='text-gray-400 border-gray-700 hover:text-white hover:border-orange-400 cursor-pointer'
+                                        >
+                                            <Filter className='w-4 h-4 mr-2' />
+                                            {showFilters ? "Hide Filters" : "Show Filters"}
+                                        </Button>
+
+                                        
+                                    </div>
+                                </div>
+
+
+                            <TabsList className='grid grid-cols-3 mb-6 md:mb-8 w-full text-xs md:text-sm'>
+                                <TabsTrigger value='live' className="relative">
+                                    <span className='hidden sm:inline'>Live Matches ({liveMatches.length})</span>
+                                    <span className='sm:hidden'>Live({liveMatches.length})</span>
+                                    {liveMatches.length > 0 && (
                                         <motion.div 
-                                            key={match.id}
-                                            variants={cardVariants}
-                                            whileHover="hover"
-                                            custom={index}
-                                        >
-                                            <Card>
-                                                <CardContent>
-                                                    <div className='flex items-center justify-between'>
-                                                        <div className='flex flex-col w-full gap-8'>
-                                                            <div className='flex justify-between gap-2 mb-2 items-center'>
-                                                                <p className='text-gray-400 text-sm'>{match.league}</p>
-                                                                <Badge variant="secondary" className=''>{formatDate(match.startTime)}</Badge>
-                                                            </div>
-                                                            <div className='text-white font-bold flex flex-col gap-2'>
-                                                                <p>{match.homeTeam} vs {match.awayTeam}</p>
-                                                                <p>{match.homeScore} - {match.awayScore}</p>
-                                                            </div>
-                                                            <div className='text-gray-400 text-sm'>{match.venue}</div>
-                                                        </div>
-                                                    </div>
-                                                </CardContent>
-                                            </Card>
-                                        </motion.div>
-                                    ))}
-                                </motion.div>
-                                <PaginationControls 
-                                    currentPage={currentPage.upcoming}
-                                    totalPages={getTotalPages(upcomingMatches.length)}
-                                    onPageChange={(page) => handlePageChange('upcoming', page)}
-                                    totalItems={upcomingMatches.length}
-                                    tab='upcoming'
-                                />
-                            </TabsContent>
-
-                            <TabsContent value='league' className='space-y-10'>
-                                {Object.keys(matchesByLeague).length === 0 ? (
-                                    <motion.div
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        className="text-center py-8"
-                                    >
-                                        <p className="text-gray-400 text-sm md:text-base">
-                                            {searchTerm || selectedLeague !== 'all' || selectedStatus !== 'all' 
-                                                ? 'No matches found with current filters' 
-                                                : 'No matches available'
-                                            }
-                                        </p>
-                                        <p className="text-gray-500 text-xs md:text-sm mt-2">
-                                            {searchTerm || selectedLeague !== 'all' || selectedStatus !== 'all'
-                                                ? 'Try adjusting your search or filters'
-                                                : 'Check back later for new fixtures!'
-                                            }
-                                        </p>
-                                    </motion.div>
-                                ) : (
-                                    <>
+                                            className='w-2 h-2 bg-red-500 rounded-full ml-1 md:ml-2'
+                                            animate={{ 
+                                                scale: [1, 1.2, 1],
+                                                opacity: [1, 0.5, 1] 
+                                            }}
+                                            transition={{ 
+                                                duration: 1,
+                                                repeat: Infinity 
+                                            }}
+                                        />
+                                    )}
+                                </TabsTrigger>
+                                <TabsTrigger value='upcoming'>
+                                    <span className='hidden sm:inline'>Upcoming ({upcomingMatches.length})</span>
+                                    <span className='sm:hidden'>Upcoming ({upcomingMatches.length})</span>
+                                </TabsTrigger>
+                                <TabsTrigger value='league'>
+                                    <span className='hidden sm:inline'>By League ({Object.keys(matchesByLeague).length})</span>
+                                    <span className='sm:hidden'>League ({Object.keys(matchesByLeague).length})</span>
+                                </TabsTrigger>
+                            </TabsList>
+                                <div className='flex justify-between'>
+                                    {/* Active Filters Display */}
+                                    {(searchTerm || selectedLeague !== 'all' || selectedStatus !== 'all') && (
                                         <motion.div
-                                            initial="hidden"
-                                            animate="visible"
-                                            variants={containerVariants}
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            className='flex flex-wrap gap-2 cursor-pointer'
                                         >
-                                            {Object.entries(matchesByLeague)
-                                                .slice((currentPage.league - 1) * 5, currentPage.league * 5)
-                                                .map(([league, matches], leagueIndex) => (
-                                                <motion.div 
-                                                    key={league}
-                                                    variants={itemVariants}
-                                                    custom={leagueIndex}
-                                                >
-                                                    <motion.h3 
-                                                        className='text-white font-bold text-xl text-left mb-5'
-                                                        whileHover={{ x: 10, color: "#fb923c" }}
-                                                        transition={{ type: "spring", stiffness: 300 }}
-                                                    >
-                                                        {league}
-                                                    </motion.h3>
-                                                    <motion.div className='space-y-3' variants={containerVariants}>
-                                                        {matches.map((match, matchIndex) => (
-                                                            <motion.div  
-                                                                key={match.id}
-                                                                variants={cardVariants}
-                                                                whileHover="hover"
-                                                                custom={matchIndex}
-                                                            >
-                                                                <Card>
-                                                                    <CardContent className='p-4'>
-                                                                        <div className='flex flex-col items-center justify-between space-y-5'>
-                                                                            <div className='flex flex-col w-full gap-1'>
-                                                                                <div className='flex items-center justify-end gap-2 mb-1'>
-                                                                                    {match.status === 'live' && (
-                                                                                        <motion.div
-                                                                                            animate={{ 
-                                                                                                scale: [1, 1.1, 1],
-                                                                                                opacity: [1, 0.8, 1]
-                                                                                            }}
-                                                                                            transition={{
-                                                                                                duration: 1.5,
-                                                                                                repeat: Infinity
-                                                                                            }}
-                                                                                        >
-                                                                                            <Badge variant="destructive" className='animate-pulse text-xs'>LIVE {match.minute}&apos;</Badge>
-                                                                                        </motion.div>
-                                                                                    )}
-                                                                                    {match.status === 'upcoming' && (
-                                                                                        <Badge variant="secondary" className='text-xs'>{formatDate(match.startTime)}</Badge>
-                                                                                    )}
-                                                                                    {match.status === 'completed' && (
-                                                                                        <Badge variant="default" className='text-xs'>FT</Badge>
-                                                                                    )}
-                                                                                </div>
-                                                                                <div className='text-white font-semibold text-sm'>
-                                                                                    {match.homeTeam} vs {match.awayTeam}
-                                                                                </div>
-                                                                            </div>
-                                                                            <div className='text-right'>
-                                                                                {match.status === 'live' ? (
-                                                                                    <div className='text-lg font-bold text-white'>
-                                                                                        <p>{match.homeScore} - {match.awayScore}</p>
-                                                                                    </div>
-                                                                                ) : (
-                                                                                    <div className='text-sm font-semibold text-orange-400'>
-                                                                                        {formatTime(match.startTime)}
-                                                                                    </div>
-                                                                                )}
-                                                                            </div>
-                                                                        </div>
-                                                                    </CardContent>
-                                                                </Card>
-                                                            </motion.div>
-                                                        ))}
-                                                    </motion.div>
+                                            {searchTerm && (
+                                                <Badge variant="secondary" className='flex items-center gap-1 text-xs'>
+                                                    Search: "{searchTerm}"
+                                                    <span onClick={() => setSearchTerm("")} className='ml-1 hover:text-red-400 cursor-pointer'>
+                                                        <X className='w-3 h-3' />
+                                                    </span>
+                                                </Badge>
+                                            )}
 
-                                                    {matches.length > 10 && (
-                                                        <div>
-                                                            <span>
-                                                                Showing 10 of {matches.length} matches
-                                                            </span>
-                                                        </div>
-                                                    )}
-                                                </motion.div>
-                                            ))}
+                                            {selectedLeague !== 'all' && (
+                                                <Badge variant="secondary" className='flex items-center gap-1 text-xs'>
+                                                    League: {selectedLeague}
+                                                    <span onClick={() => setSelectedLeague("all")} className='ml-1 hover:text-red-400 cursor-pointer'>
+                                                        <X className='w-3 h-3' />
+                                                    </span>
+                                                </Badge>
+                                            )}
+
+                                            {selectedStatus !== 'all' && (
+                                                <Badge variant="secondary" className='flex items-center gap-1 text-xs'>
+                                                    Status: {selectedStatus}
+                                                    <span onClick={() => setSelectedStatus("all")} className='ml-1 hover:text-red-400 cursor-pointer'>
+                                                        <X className='w-3 h-3' />
+                                                    </span>
+                                                </Badge>
+                                            )}
                                         </motion.div>
+                                    )}
 
-                                        {Object.keys(matchesByLeague).length > 5 && (
-                                            <PaginationControls
-                                                currentPage={currentPage.league}
-                                                totalPages={Math.ceil(Object.keys(matchesByLeague).length / 5)}
-                                                onPageChange={(page) => handlePageChange('league', page)}
-                                                totalItems={Object.keys(matchesByLeague).length}
-                                                tab='league' 
-                                            />
+                                    {/* Active Filters Indicator */}
+                                        {(searchTerm || selectedLeague !== "all" || selectedStatus !== "all") && (
+                                            <div className='flex items-center gap-2'>
+                                                <span className='text-xs text-gray-500'>
+                                                    {filteredMatches.length} of {footballMatches.length} matches found
+                                                </span>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="sm"
+                                                    onClick={clearFilters}
+                                                    className='text-gray-400 hover:text-white underline'>
+                                                    Clear All
+                                                </Button>
+                                            </div>
                                         )}
-                                    </>
-                                )}
-                            </TabsContent>
-                    </Tabs>
-                </motion.div>
-                <motion.div
-                    className='space-y-4'
-                    variants={itemVariants}
-                >
-                    {/* <motion.div
-                        whileHover={{ scale: 1.02 }}
-                        transition={{ type: "spring", stiffness: 300 }}
-                    >
-                        <AdBanner slot="0987654321" format="rectangle" className="my-4 mx-auto w-full max-w-4xl" />
-                    </motion.div> */}
+                                </div>
 
-                    <motion.div
-                        initial={{ opacity: 0, x: 50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.3, duration: 0.6}}
-                    >
-                        <BuyCoffee />
+                                <TabsContent value='live' className='space-y-4'>
+                                    {liveMatches.length === 0 ? (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 20 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            className='text-center py-8'
+                                        >
+                                            <p className="text-gray-400 text-sm md:text-base">
+                                                {searchTerm || selectedLeague !== 'all' || selectedStatus !== 'all' 
+                                                    ? 'No live matches found with current filters' 
+                                                    : 'No live matches at the moment'
+                                                }
+                                            </p>
+                                            <p className="text-gray-500 text-xs md:text-sm mt-2">
+                                                {searchTerm || selectedLeague !== 'all' || selectedStatus !== 'all'
+                                                    ? 'Try adjusting your search or filters'
+                                                    : 'Check back later for live action!'
+                                                }
+                                            </p>
+                                        </motion.div>
+                                    ) : (
+
+                                    <motion.div
+                                        initial="hidden"
+                                        animate="visible"
+                                        variants={containerVariants}
+                                        className='space-y-4'
+                                    >
+                                        {getPaginatedData(liveMatches, currentPage.live).map((match, index) => (
+                                            <motion.div
+                                                key={match.id}
+                                                variants={cardVariants}
+                                                whileHover="hover"
+                                                custom={index}
+                                            >
+                                                <Card>
+                                                    <CardContent>
+                                                        <div className='flex items-center justify-between'>
+                                                            <div className='flex flex-col w-full gap-8'>
+                                                                <div className='flex justify-between gap-2 mb-2 items-center'>
+                                                                        <p className='text-gray-400 text-sm'>{match.league}</p>
+                                                                        <motion.div
+                                                                            animate={{ 
+                                                                                scale: [1, 1.1, 1], opacity: [1, 0.8, 1] 
+                                                                            }}
+                                                                            transition={{
+                                                                                duration: 1.5,
+                                                                                repeat: Infinity
+                                                                            }}
+                                                                        >
+                                                                            <Badge variant="destructive" className='animate-pulse'>LIVE {match.minute}&apos;</Badge>
+                                                                        </motion.div>
+                                                                </div>
+                                                                <div className='text-white font-bold flex flex-col gap-2'>
+                                                                    <p>{match.homeTeam} vs {match.awayTeam}</p>
+                                                                    <p>{match.homeScore} - {match.awayScore}</p>
+                                                                </div>
+                                                                <div className='text-gray-400 text-sm'>{match.venue}</div>
+                                                            </div>
+                                                        </div>
+                                                    </CardContent>
+                                                </Card>
+                                            </motion.div>
+                                        ))}
+                                    </motion.div>
+                                    )}
+                                    <PaginationControls 
+                                        currentPage={currentPage.live}
+                                        totalPages={getTotalPages(liveMatches.length)}
+                                        onPageChange={(page) => handlePageChange('live', page)}
+                                        totalItems={liveMatches.length}
+                                        tab='live'
+                                    />
+                                </TabsContent>
+
+                                <TabsContent value='upcoming' className='space-y-4'>
+                                    <motion.div
+                                        initial="hidden"
+                                        animate="visible"
+                                        variants={containerVariants}
+                                        className='space-y-4'
+                                    >
+                                        {getPaginatedData(upcomingMatches, currentPage.upcoming).map((match, index) => (
+                                            <motion.div 
+                                                key={match.id}
+                                                variants={cardVariants}
+                                                whileHover="hover"
+                                                custom={index}
+                                            >
+                                                <Card>
+                                                    <CardContent>
+                                                        <div className='flex items-center justify-between'>
+                                                            <div className='flex flex-col w-full gap-8'>
+                                                                <div className='flex justify-between gap-2 mb-2 items-center'>
+                                                                    <p className='text-gray-400 text-sm'>{match.league}</p>
+                                                                    <Badge variant="secondary" className=''>{formatDate(match.startTime)}</Badge>
+                                                                </div>
+                                                                <div className='text-white font-bold flex flex-col gap-2'>
+                                                                    <p>{match.homeTeam} vs {match.awayTeam}</p>
+                                                                    <p>{match.homeScore} - {match.awayScore}</p>
+                                                                </div>
+                                                                <div className='text-gray-400 text-sm'>{match.venue}</div>
+                                                            </div>
+                                                        </div>
+                                                    </CardContent>
+                                                </Card>
+                                            </motion.div>
+                                        ))}
+                                    </motion.div>
+                                    <PaginationControls 
+                                        currentPage={currentPage.upcoming}
+                                        totalPages={getTotalPages(upcomingMatches.length)}
+                                        onPageChange={(page) => handlePageChange('upcoming', page)}
+                                        totalItems={upcomingMatches.length}
+                                        tab='upcoming'
+                                    />
+                                </TabsContent>
+
+                                <TabsContent value='league' className='space-y-10'>
+                                    {Object.keys(matchesByLeague).length === 0 ? (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 20 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            className="text-center py-8"
+                                        >
+                                            <p className="text-gray-400 text-sm md:text-base">
+                                                {searchTerm || selectedLeague !== 'all' || selectedStatus !== 'all' 
+                                                    ? 'No matches found with current filters' 
+                                                    : 'No matches available'
+                                                }
+                                            </p>
+                                            <p className="text-gray-500 text-xs md:text-sm mt-2">
+                                                {searchTerm || selectedLeague !== 'all' || selectedStatus !== 'all'
+                                                    ? 'Try adjusting your search or filters'
+                                                    : 'Check back later for new fixtures!'
+                                                }
+                                            </p>
+                                        </motion.div>
+                                    ) : (
+                                        <>
+                                            <motion.div
+                                                initial="hidden"
+                                                animate="visible"
+                                                variants={containerVariants}
+                                            >
+                                                {Object.entries(matchesByLeague)
+                                                    .slice((currentPage.league - 1) * 5, currentPage.league * 5)
+                                                    .map(([league, matches], leagueIndex) => (
+                                                    <motion.div 
+                                                        key={league}
+                                                        variants={itemVariants}
+                                                        custom={leagueIndex}
+                                                    >
+                                                        <motion.h3 
+                                                            className='text-white font-bold text-xl text-left mb-5'
+                                                            whileHover={{ x: 10, color: "#fb923c" }}
+                                                            transition={{ type: "spring", stiffness: 300 }}
+                                                        >
+                                                            {league}
+                                                        </motion.h3>
+                                                        <motion.div className='space-y-3' variants={containerVariants}>
+                                                            {matches.map((match, matchIndex) => (
+                                                                <motion.div  
+                                                                    key={match.id}
+                                                                    variants={cardVariants}
+                                                                    whileHover="hover"
+                                                                    custom={matchIndex}
+                                                                >
+                                                                    <Card>
+                                                                        <CardContent className='p-4'>
+                                                                            <div className='flex flex-col items-center justify-between space-y-5'>
+                                                                                <div className='flex flex-col w-full gap-1'>
+                                                                                    <div className='flex items-center justify-end gap-2 mb-1'>
+                                                                                        {match.status === 'live' && (
+                                                                                            <motion.div
+                                                                                                animate={{ 
+                                                                                                    scale: [1, 1.1, 1],
+                                                                                                    opacity: [1, 0.8, 1]
+                                                                                                }}
+                                                                                                transition={{
+                                                                                                    duration: 1.5,
+                                                                                                    repeat: Infinity
+                                                                                                }}
+                                                                                            >
+                                                                                                <Badge variant="destructive" className='animate-pulse text-xs'>LIVE {match.minute}&apos;</Badge>
+                                                                                            </motion.div>
+                                                                                        )}
+                                                                                        {match.status === 'upcoming' && (
+                                                                                            <Badge variant="secondary" className='text-xs'>{formatDate(match.startTime)}</Badge>
+                                                                                        )}
+                                                                                        {match.status === 'completed' && (
+                                                                                            <Badge variant="default" className='text-xs'>FT</Badge>
+                                                                                        )}
+                                                                                    </div>
+                                                                                    <div className='text-white font-semibold text-sm'>
+                                                                                        {match.homeTeam} vs {match.awayTeam}
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className='text-right'>
+                                                                                    {match.status === 'live' ? (
+                                                                                        <div className='text-lg font-bold text-white'>
+                                                                                            <p>{match.homeScore} - {match.awayScore}</p>
+                                                                                        </div>
+                                                                                    ) : (
+                                                                                        <div className='text-sm font-semibold text-orange-400'>
+                                                                                            {formatTime(match.startTime)}
+                                                                                        </div>
+                                                                                    )}
+                                                                                </div>
+                                                                            </div>
+                                                                        </CardContent>
+                                                                    </Card>
+                                                                </motion.div>
+                                                            ))}
+                                                        </motion.div>
+
+                                                        {matches.length > 10 && (
+                                                            <div>
+                                                                <span>
+                                                                    Showing 10 of {matches.length} matches
+                                                                </span>
+                                                            </div>
+                                                        )}
+                                                    </motion.div>
+                                                ))}
+                                            </motion.div>
+
+                                            {Object.keys(matchesByLeague).length > 5 && (
+                                                <PaginationControls
+                                                    currentPage={currentPage.league}
+                                                    totalPages={Math.ceil(Object.keys(matchesByLeague).length / 5)}
+                                                    onPageChange={(page) => handlePageChange('league', page)}
+                                                    totalItems={Object.keys(matchesByLeague).length}
+                                                    tab='league' 
+                                                />
+                                            )}
+                                        </>
+                                    )}
+                                </TabsContent>
+                        </Tabs>
                     </motion.div>
-
-                    {/* <motion.div
-                        whileHover={{ scale: 1.02 }}
-                        transition={{ type: "spring", stiffness: 300 }}
+                    <motion.div
+                        className='space-y-4'
+                        variants={itemVariants}
                     >
-                        <AdBanner slot="0987654321" format="rectangle" className="my-4 mx-auto w-full max-w-4xl" />
-                    </motion.div> */}
-                </motion.div>
+                        {/* <motion.div
+                            whileHover={{ scale: 1.02 }}
+                            transition={{ type: "spring", stiffness: 300 }}
+                        >
+                            <AdBanner slot="0987654321" format="rectangle" className="my-4 mx-auto w-full max-w-4xl" />
+                        </motion.div> */}
+
+                        <motion.div
+                            initial={{ opacity: 0, x: 50 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.3, duration: 0.6}}
+                        >
+                            <BuyCoffee />
+                        </motion.div>
+
+                        {/* <motion.div
+                            whileHover={{ scale: 1.02 }}
+                            transition={{ type: "spring", stiffness: 300 }}
+                        >
+                            <AdBanner slot="0987654321" format="rectangle" className="my-4 mx-auto w-full max-w-4xl" />
+                        </motion.div> */}
+                    </motion.div>
+                </div>
             </div>
-        </div>
         </section>
     // </motion.section>
 
