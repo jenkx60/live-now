@@ -3,11 +3,13 @@ import React from 'react'
 import { Button } from '../ui/button'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import Snowfall from 'react-snowfall'
 
 const HeroSection = () => {
   return (
     <section className='bg-[url("/stadium.jpg")] bg-cover bg-center bg-no-repeat flex flex-col space-y-6 md:space-y-10 min-h-[80vh] md:min-h-[85vh] justify-center relative overflow-hidden'>
       <div className="absolute inset-0 bg-black/60 h-full"></div>
+        <Snowfall color='white' snowflakeCount={50}/>
         <div className='relative max-w-xs md:max-w-2xl mx-auto px-5 py-20 mt-20 text-center space-y-10'>
             <motion.div 
               className='space-y-4 md:space-y-6'
