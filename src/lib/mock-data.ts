@@ -455,3 +455,102 @@ export function getAllMockEvents() {
     ...mockFootballEvents,
   ]
 }
+
+export const mockMatchDetails: any = {
+  ...mockFootballEvents[0],
+  homeTeamId: 50, // Man City
+  awayTeamId: 42, // Arsenal
+  events: [
+    {
+      time: { elapsed: 18, extra: 0 },
+      team: { id: 50, name: "Manchester City", logo: "https://media.api-sports.io/football/teams/50.png" },
+      player: { id: 629, name: "Kevin De Bruyne" },
+      assist: { id: 631, name: "Phil Foden" },
+      type: "Goal",
+      detail: "Normal Goal",
+    },
+    {
+      time: { elapsed: 42, extra: 0 },
+      team: { id: 42, name: "Arsenal", logo: "https://media.api-sports.io/football/teams/42.png" },
+      player: { id: 1460, name: "Bukayo Saka" },
+      assist: { id: 1435, name: "Martin Ødegaard" },
+      type: "Goal",
+      detail: "Normal Goal",
+    },
+     {
+      time: { elapsed: 67, extra: 0 },
+      team: { id: 50, name: "Manchester City", logo: "https://media.api-sports.io/football/teams/50.png" },
+      player: { id: 629, name: "Erling Haaland" },
+      assist: { id: 631, name: "Kevin De Bruyne" },
+      type: "Goal",
+      detail: "Normal Goal",
+    },
+  ],
+  lineups: [
+    {
+      team: { id: 50, name: "Manchester City", logo: "https://media.api-sports.io/football/teams/50.png", colors: {} },
+      formation: "4-3-3",
+      startXI: [
+        { player: { id: 1, name: "Ederson", number: 31, pos: "G", grid: "1:1" } },
+        { player: { id: 2, name: "Kyle Walker", number: 2, pos: "D", grid: "2:4" } },
+        { player: { id: 3, name: "Ruben Dias", number: 3, pos: "D", grid: "2:3" } },
+        { player: { id: 4, name: "Manuel Akanji", number: 25, pos: "D", grid: "2:2" } },
+        { player: { id: 5, name: "Nathan Ake", number: 6, pos: "D", grid: "2:1" } },
+        { player: { id: 6, name: "Rodri", number: 16, pos: "M", grid: "3:3" } },
+        { player: { id: 7, name: "Kevin De Bruyne", number: 17, pos: "M", grid: "3:2" } },
+        { player: { id: 8, name: "Bernardo Silva", number: 20, pos: "M", grid: "3:1" } },
+        { player: { id: 9, name: "Phil Foden", number: 47, pos: "F", grid: "4:3" } },
+        { player: { id: 10, name: "Erling Haaland", number: 9, pos: "F", grid: "4:2" } },
+        { player: { id: 11, name: "Jack Grealish", number: 10, pos: "F", grid: "4:1" } },
+      ],
+      substitutes: [],
+      coach: { id: 1, name: "Pep Guardiola", photo: "" }
+    },
+    {
+       team: { id: 42, name: "Arsenal", logo: "https://media.api-sports.io/football/teams/42.png", colors: {} },
+      formation: "4-2-3-1",
+      startXI: [
+        { player: { id: 12, name: "David Raya", number: 22, pos: "G", grid: "1:1" } },
+        { player: { id: 13, name: "Ben White", number: 4, pos: "D", grid: "2:4" } },
+        { player: { id: 14, name: "William Saliba", number: 2, pos: "D", grid: "2:3" } },
+        { player: { id: 15, name: "Gabriel", number: 6, pos: "D", grid: "2:2" } },
+        { player: { id: 16, name: "Zinchenko", number: 35, pos: "D", grid: "2:1" } },
+        { player: { id: 17, name: "Declan Rice", number: 41, pos: "M", grid: "3:2" } },
+        { player: { id: 18, name: "Jorginho", number: 20, pos: "M", grid: "3:1" } },
+        { player: { id: 19, name: "Bukayo Saka", number: 7, pos: "F", grid: "4:3" } },
+        { player: { id: 20, name: "Martin Ødegaard", number: 8, pos: "F", grid: "4:2" } },
+        { player: { id: 21, name: "Gabriel Martinelli", number: 11, pos: "F", grid: "4:1" } },
+        { player: { id: 22, name: "Gabriel Jesus", number: 9, pos: "F", grid: "5:1" } },
+      ],
+      substitutes: [],
+      coach: { id: 2, name: "Mikel Arteta", photo: "" }
+    }
+  ],
+  statistics: [
+    {
+      team: { id: 50, name: "Manchester City", logo: "https://media.api-sports.io/football/teams/50.png" },
+      statistics: [
+        { type: "Ball Possession", value: "65%" },
+        { type: "Shots on Goal", value: 8 },
+        { type: "Total Shots", value: 15 },
+        { type: "Corner Kicks", value: 6 },
+        { type: "Fouls", value: 10 },
+      ] 
+    },
+    {
+      team: { id: 42, name: "Arsenal", logo: "https://media.api-sports.io/football/teams/42.png" },
+      statistics: [
+        { type: "Ball Possession", value: "35%" },
+        { type: "Shots on Goal", value: 4 },
+        { type: "Total Shots", value: 7 },
+        { type: "Corner Kicks", value: 3 },
+        { type: "Fouls", value: 12 },
+      ] 
+    }
+  ]
+};
+
+export function getMockMatchDetails(id: string) {
+  // Always return the sample match for any ID in dev mode check
+  return { ...mockMatchDetails, id };
+}

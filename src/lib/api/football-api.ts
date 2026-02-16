@@ -4,6 +4,8 @@
  * Free tier: 100 requests/day
  */
 
+import type { FootballEvent, Lineup, MatchEvent, Player, TeamStatistics } from "@/lib/types"
+
 const NEXT_PUBLIC_FOOTBALL_API_KEY = process.env.NEXT_PUBLIC_FOOTBALL_API_KEY
 const BASE_URL = "https://v3.football.api-sports.io"
 const API_HOST = "v3.football.api-sports.io"
@@ -247,10 +249,10 @@ function getMatchStatus(apiStatus: string): 'live' | 'upcoming' | 'completed' {
 }
 
 // convert api to our match format
-function transformFootballData(matches: RapidAPIFootballMatch[]) {
+function transformFootballData(matches: RapidAPIFootballMatch[]): FootballEvent[] {
   return matches.map((match) => ({
     id: match.fixture.id.toString(),
-    sport: 'football',
+    sport: 'football' as const,
     title: `${match.teams.home.name} vs ${match.teams.away.name}`,
     description: `${match.league.name} Match`,
     startTime: match.fixture.date,
@@ -268,6 +270,8 @@ function transformFootballData(matches: RapidAPIFootballMatch[]) {
     homeTeamLogo: match.teams.home.logo,
     awayTeamLogo: match.teams.away.logo,
     LeagueLogo: match.league.logo,
+    homeTeamId: match.teams.home.id,
+    awayTeamId: match.teams.away.id,
     countryFlag: match.league.flag,
   }));
 }
@@ -383,6 +387,174 @@ export async function fetchPopularLeaguesFixtures() {
   } catch (error) {
     console.error("Error fetching popular leagues fixtures:", error);
     throw error;
+  }
+}
+
+
+// Interfaces for API response structure (Match Details)
+interface ApiFixtureDetails {
+  fixture: {
+    id: number;
+    // ... other fields similar to ApiFootballFixture
+    referee: string | null;
+    timezone: string;
+    date: string;
+    timestamp: number;
+    periods: {
+      first: number | null;
+      second: number | null;
+    };
+    venue: {
+      id: number | null;
+      name: string;
+      city: string;
+    };
+    status: {
+      long: string;
+      short: string;
+      elapsed: number | null;
+    };
+  };
+  league: {
+    id: number;
+    name: string;
+    country: string;
+    logo: string;
+    flag: string;
+    season: number;
+    round: string;
+  };
+  teams: {
+    home: {
+      id: number;
+      name: string;
+      logo: string;
+      winner: boolean | null;
+    };
+    away: {
+      id: number;
+      name: string;
+      logo: string;
+      winner: boolean | null;
+    };
+  };
+  goals: {
+    home: number | null;
+    away: number | null;
+  };
+  score: {
+    halftime: {
+      home: number | null;
+      away: number | null;
+    };
+    fulltime: {
+      home: number | null;
+      away: number | null;
+    };
+    extratime: {
+      home: number | null;
+      away: number | null;
+    };
+    penalty: {
+      home: number | null;
+      away: number | null;
+    };
+  };
+  events: MatchEvent[]; // We'll map this to our MatchEvent type
+  lineups: Lineup[]; // We'll map this to our Lineup type
+  statistics: TeamStatistics[]; // We'll map this to our TeamStatistics type
+  players: Player[]; // We ignore this for now to keep it simple
+}
+
+// Get detailed fixture data (events, lineups, stats)
+export async function getFixtureDetails(fixtureId: string) {
+  try {
+    // Determine endpoints based on your plan. 
+    // API-Football has /fixtures?id={id} which returns events, lineups, statistics if available.
+    // NOTE: Statistics, Lineups, and Events might be in the same response if we use the main endpoint.
+    // However, sometimes we might need separate calls if the main one is too heavy or structured differently.
+    // But usually /fixtures?id=X includes almost everything.
+    
+    // Clean ID if it has prefix 'fb-'
+    const cleanId = fixtureId.replace('fb-', '');
+    
+    const data = await makeRapidAPICall(`/fixtures?id=${cleanId}`);
+    
+    if (!data.response || data.response.length === 0) {
+      throw new Error('Match not found');
+    }
+
+    const matchData = data.response[0] as unknown as ApiFixtureDetails;
+    
+    // Transform to our MatchDetails type
+    // We reuse transformFootballData logic for the base part, but we need to map the extra fields
+    const baseMatch = transformFootballData([matchData as any])[0];
+    
+    return {
+      ...baseMatch,
+      events: matchData.events || [],
+      lineups: matchData.lineups || [],
+      statistics: matchData.statistics || []
+    };
+    
+  } catch (error) {
+    console.error("Error fetching fixture details:", error);
+    throw error;
+  }
+}
+
+// Get Head to Head data
+export async function getHeadToHead(team1Id: string, team2Id: string) {
+  try {
+    const endpoint = `/fixtures/headtohead?h2h=${team1Id}-${team2Id}&last=10`
+    // API-Football endpoint: /fixtures/headtohead?h2h={team1}-{team2}
+    const data = await makeRapidAPICall(endpoint);
+
+    if (!data.response || !Array.isArray(data.response)) {
+      console.warn('No H2H data found');
+      return {
+        lastMatches: [],
+        homeWins: 0,
+        awayWins: 0,
+        draws: 0
+      }
+    }
+    
+    const matches = transformFootballData(data.response);
+
+    return {
+      lastMatches: matches,
+      homeWins: 0,
+      awayWins: 0,
+      draws: 0
+    };
+    
+    
+    matches.forEach(match => {
+      // Logic depends on who is home/away in the specific historical match
+      // But usually H2H summary is relative to the two teams.
+      // API doesn't give a "summary" object, we calculate it or just return the list.
+      // For now, let's just return the list and calculating wins might be complex 
+      // without knowing which teamId is which in the "homeWins" context.
+      // Simplification: We will just return the list of matches for now.
+    });
+
+    return {
+      lastMatches: matches,
+      // We can implement precise counts if needed, but the UI might just show the list
+      homeWins: 0, 
+      awayWins: 0,
+      draws: 0
+    };
+    
+  } catch (error) {
+    console.error("Error fetching head to head:", error);
+    return {
+      lastMatches: [],
+      homeWins: 0,
+      awayWins: 0,
+      draws: 0
+    }
   }
 }
 

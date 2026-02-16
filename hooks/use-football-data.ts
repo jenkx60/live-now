@@ -1,57 +1,3 @@
-// import { mockFootballEvents } from "@/lib/mock-data";
-// import { FootballEvent } from "@/lib/types";
-// import { useEffect, useState } from "react";
-
-// export function useFootballData() {
-//     const [events, setEvents] = useState<FootballEvent[]>([]);
-//     const [isLoading, setIsLoading] = useState<boolean>(true);
-//     const [error, setError] = useState<string | null>(null);
-
-//     useEffect(() => {
-//         async function fetchData() {
-//             try {
-//                 setIsLoading(true);
-
-//                 // tocheck if api is working
-//                 const hasApiKey = process.env.NEXT_PUBLIC_FOOTBALL_API_KEY;
-
-//                 if (!hasApiKey) {
-//                     // we use the mock data if no api key
-//                     console.log("Api key not found, using mock data")
-//                     setEvents(mockFootballEvents);
-//                     setIsLoading(false);
-//                     return;
-//                 }
-
-//                 // to fetch from the api
-//                 const response = await fetch("/api/football/fixtures");
-
-//                 if (!response.ok) {
-//                     throw new Error("Failed to fetch football data");
-//                 }
-
-//                 const data = await response.json();
-//                 setEvents(data.events || []);
-//             } catch (err) {
-//                 console.error("Error fetching football data:", err);
-//                 setError("Error fetching football data");
-//                 setEvents(mockFootballEvents); // Fallback to mock data
-//             } finally {
-//                 setIsLoading(false);
-//             }
-//         }
-
-//         fetchData();
-
-//         // to minimize the api calls lets refresh every 14 minutes
-//         const interval = setInterval(fetchData, 14 * 60 * 1000);
-
-//         return () => clearInterval(interval);
-//     }, []);
-
-//     return { events, isLoading, error };
-// };
-
 import { useState, useEffect, useCallback } from 'react';
 import { Event, APIResponse, FootballEvent } from '@/lib/types';
 
@@ -83,7 +29,7 @@ export const useFootballData = (
       setLoading(true);
       setError(null);
       
-      console.log(`🔄 Hook fetching: sport=${sport}, status=${status}`);
+      console.log(`Hook fetching: sport=${sport}, status=${status}`);
       
       const params = new URLSearchParams();
       if (sport) params.append('sport', sport);
@@ -92,7 +38,7 @@ export const useFootballData = (
       const response = await fetch(`/api/events?${params.toString()}`);
       
       // const url = `/api/events?${params.toString()}`;
-      // console.log(`🌐 Calling: ${url}`);
+      // console.log(`Calling: ${url}`);
       
       // const response = await fetch(url);
       
@@ -107,16 +53,16 @@ export const useFootballData = (
         setIsRealData(result.isRealData);
         setLastUpdated(new Date());
         
-        // ✅ Set API status
+        // Set API status
         if (result.isRealData) {
           setApiStatus('connected');
-          console.log('✅ Using real API data');
+          console.log(' Using real API data');
         } else {
           setApiStatus('fallback');
-          console.log('⚠️ Using fallback data:', result.fallbackReason);
+          console.log('Using fallback data:', result.fallbackReason);
         }
         
-        console.log(`📊 Hook received ${result.events.length} events`);
+        console.log(`Hook received ${result.events.length} events`);
       } else {
         throw new Error(result.message || 'API returned success: false');
       }
@@ -124,32 +70,32 @@ export const useFootballData = (
       const errorMessage = err instanceof Error ? err.message : 'Network error';
       setError(errorMessage);
       setApiStatus('error');
-      console.error('❌ Hook fetch error:', err);
+      console.error('Hook fetch error:', err);
     } finally {
       setLoading(false);
     }
   }, [sport, status]);
 
-  // ✅ Initial fetch
+  // Initial fetch
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
-  // ✅ Auto-refresh for live data
+  // Auto-refresh for live data
   useEffect(() => {
     if (!autoRefresh || status !== 'live' || !isRealData) {
       return; // Only auto-refresh for live real data
     }
 
-    console.log(`🔄 Setting up auto-refresh every ${refreshInterval/1000}s for live data`);
+    console.log(`Setting up auto-refresh every ${refreshInterval/1000}s for live data`);
     
     const interval = setInterval(() => {
-      console.log('🔄 Auto-refreshing live data...');
+      console.log('Auto-refreshing live data...');
       fetchData();
     }, refreshInterval);
 
     return () => {
-      console.log('🛑 Clearing auto-refresh interval');
+      console.log('Clearing auto-refresh interval');
       clearInterval(interval);
     };
   }, [autoRefresh, status, refreshInterval, fetchData, isRealData]);
@@ -165,7 +111,7 @@ export const useFootballData = (
   };
 };
 
-// ✅ Hook to test API connection
+// Hook to test API connection
 export const useAPITest = () => {
   const [testing, setTesting] = useState(false);
   const [result, setResult] = useState<{ success: boolean; message: string } | null>(null);
