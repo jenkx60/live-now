@@ -33,14 +33,14 @@ const Header = () => {
     }
   return (
     <>
-        <Snowfall color="white" snowflakeCount={50}/>
+        {/* <Snowfall color="white" snowflakeCount={50}/> */}
         <motion.nav
             initial={{ y: -100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
             className='w-full border-b border-background fixed top-0 left-0 z-50 backdrop-blur-md bg-(--background)/80'
         >
-            <Snowfall color="white" snowflakeCount={50}/>
+            {/* <Snowfall color="white" snowflakeCount={50}/> */}
             <div className='flex items-center justify-between p-4 md:p-5'>
                 {/* Logo Section */}
                     <motion.div
@@ -144,7 +144,7 @@ const Header = () => {
                         className='fixed inset-0 bg-black/80 backdrop-blur-sm md:hidden z-60'
                         onClick={closeMobileMenu}
                     >
-                        <Snowfall color="white" snowflakeCount={10}/>
+                        {/* <Snowfall color="white" snowflakeCount={10}/> */}
                         {/* Mobile Menu Panel */}
                             <motion.div
                                 initial={{ x: "100%", opacity: 0 }}
