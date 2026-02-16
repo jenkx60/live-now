@@ -38,7 +38,7 @@ const Header = () => {
             initial={{ y: -100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className='w-full border-b border-[var(--background)] fixed top-0 left-0 z-50 backdrop-blur-md bg-[var(--background)]/80'
+            className='w-full border-b border-background fixed top-0 left-0 z-50 backdrop-blur-md bg-(--background)/80'
         >
             <Snowfall color="white" snowflakeCount={50}/>
             <div className='flex items-center justify-between p-4 md:p-5'>
@@ -141,7 +141,7 @@ const Header = () => {
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.3 }}
                         exit={{ opacity: 0 }}
-                        className='fixed inset-0 bg-black/80 backdrop-blur-sm md:hidden z-[60]'
+                        className='fixed inset-0 bg-black/80 backdrop-blur-sm md:hidden z-60'
                         onClick={closeMobileMenu}
                     >
                         <Snowfall color="white" snowflakeCount={10}/>
@@ -156,7 +156,7 @@ const Header = () => {
                                     damping: 30,
                                     opacity: { duration: 0.2 }
                                 }}
-                                className="fixed right-0 top-0 h-full w-80 max-w-[95vw] bg-[var(--background)] border-gray-700 lg:hidden z-[70]"
+                                className="fixed right-0 top-0 h-full w-80 max-w-[95vw] bg-background border-gray-700 lg:hidden z-70"
                                 onClick={(e) => e.stopPropagation()}
                             >
                                 <div className="flex flex-col h-full">
@@ -177,7 +177,7 @@ const Header = () => {
                                     </div>
 
                                     {/* Mobile Navigation Links */}
-                                    <div className="flex-1 px-4 py-6 bg-[var(--background)] backdrop-blur-sm z-50">
+                                    <div className="flex-1 px-4 py-6 bg-background backdrop-blur-sm z-50">
                                         <ul className='space-y-6'>
                                             {navLinks.map((link: navLinks, index: number) => (
                                                 <motion.li
@@ -204,7 +204,7 @@ const Header = () => {
                                     </div>
 
                                     {/* Mobile CTA Button */}
-                                    <div className="p-4 border-gray-700 bg-[var(--background)] backdrop-blur-sm z-50">
+                                    <div className="p-4 border-gray-700 bg-background backdrop-blur-sm z-50">
                                         <motion.div
                                             initial={{ y: 20, opacity: 0 }}
                                             animate={{ y: 0, opacity: 1 }}

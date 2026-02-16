@@ -82,6 +82,8 @@ export interface FootballEvent extends SportEvent {
   awayTeamLogo?: string;
   leagueLogo?: string;
   countryFlag?: string;
+  homeTeamId?: number;
+  awayTeamId?: number;
   matchStatus?: string;
 }
 
@@ -124,4 +126,90 @@ export interface APIResponse {
   timestamp: string;
   fallbackReason?: string;
   message?: string;
+}
+
+export interface Player {
+  id: number;
+  name: string;
+  number: number;
+  pos: string;
+  grid: string | null;
+}
+
+export interface Lineup {
+  team: {
+    id: number;
+    name: string;
+    logo: string;
+    colors: {
+      player: {
+        primary: string;
+        number: string;
+        border: string;
+      };
+      goalkeeper: {
+        primary: string;
+        number: string;
+        border: string;
+      };
+    };
+  };
+  formation: string;
+  startXI: { player: Player }[];
+  substitutes: { player: Player }[];
+  coach: {
+    id: number;
+    name: string;
+    photo: string;
+  };
+}
+
+export interface MatchEvent {
+  time: {
+    elapsed: number;
+    extra?: number;
+  };
+  team: {
+    id: number;
+    name: string;
+    logo: string;
+  };
+  player: {
+    id: number;
+    name: string;
+  };
+  assist: {
+    id: number | null;
+    name: string | null;
+  };
+  type: string;
+  detail: string;
+  comments?: string | null;
+}
+
+export interface MatchStatistic {
+  type: string;
+  value: string | number | null;
+}
+
+export interface TeamStatistics {
+  team: {
+    id: number;
+    name: string;
+    logo: string;
+  };
+  statistics: MatchStatistic[];
+}
+
+export interface MatchDetails extends FootballEvent {
+  events: MatchEvent[];
+  lineups: Lineup[];
+  statistics: TeamStatistics[];
+}
+
+export interface HeadToHead {
+  homeWins: number;
+  awayWins: number;
+  draws: number;
+  lastMatches: FootballEvent[];
 }

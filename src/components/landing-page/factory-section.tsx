@@ -18,6 +18,7 @@ import { Label } from '../ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import { totalmem } from 'os'
 import Snowfall from 'react-snowfall'
+import MatchCard from '../game/match-card'
 
 const FactorySection = () => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -417,7 +418,7 @@ const FactorySection = () => {
         // viewport={{ once: true, amount: 0.2 }}
         // variants={containerVariants}
     >
-            <Snowfall color='white' snowflakeCount={50}/>
+            {/* <Snowfall color='white' snowflakeCount={50}/> */}
             <div className='max-w-6xl mx-auto px-2 md:px-5 py-6 md:py-10 text-center w-full gap-6 md:gap-8 lg:gap-10 flex flex-col'>
                 <motion.div 
                     className='text-center space-y-4 mb-6 md:mb-10'
@@ -675,40 +676,41 @@ const FactorySection = () => {
                                         className='space-y-4'
                                     >
                                         {getPaginatedData(liveMatches, currentPage.live).map((match, index) => (
-                                            <motion.div
-                                                key={match.id}
-                                                variants={cardVariants}
-                                                whileHover="hover"
-                                                custom={index}
-                                            >
-                                                <Card>
-                                                    <CardContent>
-                                                        <div className='flex items-center justify-between'>
-                                                            <div className='flex flex-col w-full gap-8'>
-                                                                <div className='flex justify-between gap-2 mb-2 items-center'>
-                                                                        <p className='text-gray-400 text-sm'>{match.league}</p>
-                                                                        <motion.div
-                                                                            animate={{ 
-                                                                                scale: [1, 1.1, 1], opacity: [1, 0.8, 1] 
-                                                                            }}
-                                                                            transition={{
-                                                                                duration: 1.5,
-                                                                                repeat: Infinity
-                                                                            }}
-                                                                        >
-                                                                            <Badge variant="destructive" className='animate-pulse'>LIVE {match.minute}&apos;</Badge>
-                                                                        </motion.div>
-                                                                </div>
-                                                                <div className='text-white font-bold flex flex-col gap-2'>
-                                                                    <p>{match.homeTeam} vs {match.awayTeam}</p>
-                                                                    <p>{match.homeScore} - {match.awayScore}</p>
-                                                                </div>
-                                                                <div className='text-gray-400 text-sm'>{match.venue}</div>
-                                                            </div>
-                                                        </div>
-                                                    </CardContent>
-                                                </Card>
-                                            </motion.div>
+                                            // <motion.div
+                                            //     key={match.id}
+                                            //     variants={cardVariants}
+                                            //     whileHover="hover"
+                                            //     custom={index}
+                                            // >
+                                            //     <Card>
+                                            //         <CardContent>
+                                            //             <div className='flex items-center justify-between'>
+                                            //                 <div className='flex flex-col w-full gap-8'>
+                                            //                     <div className='flex justify-between gap-2 mb-2 items-center'>
+                                            //                             <p className='text-gray-400 text-sm'>{match.league}</p>
+                                            //                             <motion.div
+                                            //                                 animate={{ 
+                                            //                                     scale: [1, 1.1, 1], opacity: [1, 0.8, 1] 
+                                            //                                 }}
+                                            //                                 transition={{
+                                            //                                     duration: 1.5,
+                                            //                                     repeat: Infinity
+                                            //                                 }}
+                                            //                             >
+                                            //                                 <Badge variant="destructive" className='animate-pulse'>LIVE {match.minute}&apos;</Badge>
+                                            //                             </motion.div>
+                                            //                     </div>
+                                            //                     <div className='text-white font-bold flex flex-col gap-2'>
+                                            //                         <p>{match.homeTeam} vs {match.awayTeam}</p>
+                                            //                         <p>{match.homeScore} - {match.awayScore}</p>
+                                            //                     </div>
+                                            //                     <div className='text-gray-400 text-sm'>{match.venue}</div>
+                                            //                 </div>
+                                            //             </div>
+                                            //         </CardContent>
+                                            //     </Card>
+                                            // </motion.div>
+                                            <MatchCard key={match.id} match={match}/>
                                         ))}
                                     </motion.div>
                                     )}
@@ -729,30 +731,31 @@ const FactorySection = () => {
                                         className='space-y-4'
                                     >
                                         {getPaginatedData(upcomingMatches, currentPage.upcoming).map((match, index) => (
-                                            <motion.div 
-                                                key={match.id}
-                                                variants={cardVariants}
-                                                whileHover="hover"
-                                                custom={index}
-                                            >
-                                                <Card>
-                                                    <CardContent>
-                                                        <div className='flex items-center justify-between'>
-                                                            <div className='flex flex-col w-full gap-8'>
-                                                                <div className='flex justify-between gap-2 mb-2 items-center'>
-                                                                    <p className='text-gray-400 text-sm'>{match.league}</p>
-                                                                    <Badge variant="secondary" className=''>{formatDate(match.startTime)}</Badge>
-                                                                </div>
-                                                                <div className='text-white font-bold flex flex-col gap-2'>
-                                                                    <p>{match.homeTeam} vs {match.awayTeam}</p>
-                                                                    <p>{match.homeScore} - {match.awayScore}</p>
-                                                                </div>
-                                                                <div className='text-gray-400 text-sm'>{match.venue}</div>
-                                                            </div>
-                                                        </div>
-                                                    </CardContent>
-                                                </Card>
-                                            </motion.div>
+                                            // <motion.div 
+                                            //     key={match.id}
+                                            //     variants={cardVariants}
+                                            //     whileHover="hover"
+                                            //     custom={index}
+                                            // >
+                                            //     <Card>
+                                            //         <CardContent>
+                                            //             <div className='flex items-center justify-between'>
+                                            //                 <div className='flex flex-col w-full gap-8'>
+                                            //                     <div className='flex justify-between gap-2 mb-2 items-center'>
+                                            //                         <p className='text-gray-400 text-sm'>{match.league}</p>
+                                            //                         <Badge variant="secondary" className=''>{formatDate(match.startTime)}</Badge>
+                                            //                     </div>
+                                            //                     <div className='text-white font-bold flex flex-col gap-2'>
+                                            //                         <p>{match.homeTeam} vs {match.awayTeam}</p>
+                                            //                         <p>{match.homeScore} - {match.awayScore}</p>
+                                            //                     </div>
+                                            //                     <div className='text-gray-400 text-sm'>{match.venue}</div>
+                                            //                 </div>
+                                            //             </div>
+                                            //         </CardContent>
+                                            //     </Card>
+                                            // </motion.div>
+                                            <MatchCard key={match.id} match={match} />
                                         ))}
                                     </motion.div>
                                     <PaginationControls 
@@ -808,57 +811,58 @@ const FactorySection = () => {
                                                         </motion.h3>
                                                         <motion.div className='space-y-3' variants={containerVariants}>
                                                             {matches.map((match, matchIndex) => (
-                                                                <motion.div  
-                                                                    key={match.id}
-                                                                    variants={cardVariants}
-                                                                    whileHover="hover"
-                                                                    custom={matchIndex}
-                                                                >
-                                                                    <Card>
-                                                                        <CardContent className='p-4'>
-                                                                            <div className='flex flex-col items-center justify-between space-y-5'>
-                                                                                <div className='flex flex-col w-full gap-1'>
-                                                                                    <div className='flex items-center justify-end gap-2 mb-1'>
-                                                                                        {match.status === 'live' && (
-                                                                                            <motion.div
-                                                                                                animate={{ 
-                                                                                                    scale: [1, 1.1, 1],
-                                                                                                    opacity: [1, 0.8, 1]
-                                                                                                }}
-                                                                                                transition={{
-                                                                                                    duration: 1.5,
-                                                                                                    repeat: Infinity
-                                                                                                }}
-                                                                                            >
-                                                                                                <Badge variant="destructive" className='animate-pulse text-xs'>LIVE {match.minute}&apos;</Badge>
-                                                                                            </motion.div>
-                                                                                        )}
-                                                                                        {match.status === 'upcoming' && (
-                                                                                            <Badge variant="secondary" className='text-xs'>{formatDate(match.startTime)}</Badge>
-                                                                                        )}
-                                                                                        {match.status === 'completed' && (
-                                                                                            <Badge variant="default" className='text-xs'>FT</Badge>
-                                                                                        )}
-                                                                                    </div>
-                                                                                    <div className='text-white font-semibold text-sm'>
-                                                                                        {match.homeTeam} vs {match.awayTeam}
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div className='text-right'>
-                                                                                    {match.status === 'live' ? (
-                                                                                        <div className='text-lg font-bold text-white'>
-                                                                                            <p>{match.homeScore} - {match.awayScore}</p>
-                                                                                        </div>
-                                                                                    ) : (
-                                                                                        <div className='text-sm font-semibold text-orange-400'>
-                                                                                            {formatTime(match.startTime)}
-                                                                                        </div>
-                                                                                    )}
-                                                                                </div>
-                                                                            </div>
-                                                                        </CardContent>
-                                                                    </Card>
-                                                                </motion.div>
+                                                                // <motion.div  
+                                                                //     key={match.id}
+                                                                //     variants={cardVariants}
+                                                                //     whileHover="hover"
+                                                                //     custom={matchIndex}
+                                                                // >
+                                                                //     <Card>
+                                                                //         <CardContent className='p-4'>
+                                                                //             <div className='flex flex-col items-center justify-between space-y-5'>
+                                                                //                 <div className='flex flex-col w-full gap-1'>
+                                                                //                     <div className='flex items-center justify-end gap-2 mb-1'>
+                                                                //                         {match.status === 'live' && (
+                                                                //                             <motion.div
+                                                                //                                 animate={{ 
+                                                                //                                     scale: [1, 1.1, 1],
+                                                                //                                     opacity: [1, 0.8, 1]
+                                                                //                                 }}
+                                                                //                                 transition={{
+                                                                //                                     duration: 1.5,
+                                                                //                                     repeat: Infinity
+                                                                //                                 }}
+                                                                //                             >
+                                                                //                                 <Badge variant="destructive" className='animate-pulse text-xs'>LIVE {match.minute}&apos;</Badge>
+                                                                //                             </motion.div>
+                                                                //                         )}
+                                                                //                         {match.status === 'upcoming' && (
+                                                                //                             <Badge variant="secondary" className='text-xs'>{formatDate(match.startTime)}</Badge>
+                                                                //                         )}
+                                                                //                         {match.status === 'completed' && (
+                                                                //                             <Badge variant="default" className='text-xs'>FT</Badge>
+                                                                //                         )}
+                                                                //                     </div>
+                                                                //                     <div className='text-white font-semibold text-sm'>
+                                                                //                         {match.homeTeam} vs {match.awayTeam}
+                                                                //                     </div>
+                                                                //                 </div>
+                                                                //                 <div className='text-right'>
+                                                                //                     {match.status === 'live' ? (
+                                                                //                         <div className='text-lg font-bold text-white'>
+                                                                //                             <p>{match.homeScore} - {match.awayScore}</p>
+                                                                //                         </div>
+                                                                //                     ) : (
+                                                                //                         <div className='text-sm font-semibold text-orange-400'>
+                                                                //                             {formatTime(match.startTime)}
+                                                                //                         </div>
+                                                                //                     )}
+                                                                //                 </div>
+                                                                //             </div>
+                                                                //         </CardContent>
+                                                                //     </Card>
+                                                                // </motion.div>
+                                                                <MatchCard key={match.id} match={match} />
                                                             ))}
                                                         </motion.div>
 
